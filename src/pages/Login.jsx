@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  GraduationCap,
-  User,
-} from "lucide-react";
+import { loginUser, registerUser } from "../services/authApi";
+import { Mail, Lock, Eye, EyeOff, GraduationCap, User } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -17,24 +11,20 @@ import "./Login.css";
 function Login() {
   const navigate = useNavigate();
 
-  const [isLogin, setIsLogin] =
-    useState(true);
+  const [isLogin, setIsLogin] = useState(true);
 
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [formData, setFormData] =
-    useState({
-      name: "",
-      email: "",
-      password: "",
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -42,72 +32,38 @@ function Login() {
     e.preventDefault();
 
     try {
-      const url = isLogin
-        ? "http://localhost:5000/api/auth/login"
-        : "http://localhost:5000/api/auth/register";
+      const response = isLogin
+        ? await loginUser(formData)
+        : await registerUser(formData);
 
-      const response =
-        await fetch(url, {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify(
-            formData
-          ),
-        });
-
-      const data =
-        await response.json();
-
-      if (!response.ok) {
-        alert(
-          data.message ||
-            "Something went wrong"
-        );
-        return;
-      }
+      const data = response.data;
 
       if (isLogin) {
-        localStorage.setItem(
-          "token",
-          data.token
-        );
+        localStorage.setItem("token", data.token);
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify(data.user)
-        );
+        localStorage.setItem("user", JSON.stringify(data.user));
 
-        navigate(
-          "/student-dashboard"
-        );
+        navigate("/student-dashboard");
       } else {
-        alert(
-          "Registration successful. Please login."
-        );
+        alert("Registration successful. Please login.");
 
         setIsLogin(true);
       }
     } catch (error) {
       console.error(error);
 
-      alert("Server Error");
+      alert(error.response?.data?.message || "Server Error");
     }
   };
 
   const handleGoogleLogin = () => {
-    window.location.href =
-      "http://localhost:5000/api/auth/google";
+    const url = `${import.meta.env.VITE_API_URL}/auth/google`;
+    window.location.href = url;
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
-
         <div className="auth-logo">
           <div className="logo-icon">
             <GraduationCap size={42} />
@@ -115,40 +71,26 @@ function Login() {
 
           <h1>My-Academy</h1>
 
-          <span>
-            Learn • Grow • Succeed
-          </span>
+          <span>Learn • Grow • Succeed</span>
         </div>
 
         <div className="auth-tabs">
           <button
-            className={
-              isLogin ? "active" : ""
-            }
-            onClick={() =>
-              setIsLogin(true)
-            }
+            className={isLogin ? "active" : ""}
+            onClick={() => setIsLogin(true)}
           >
             Login
           </button>
 
           <button
-            className={
-              !isLogin ? "active" : ""
-            }
-            onClick={() =>
-              setIsLogin(false)
-            }
+            className={!isLogin ? "active" : ""}
+            onClick={() => setIsLogin(false)}
           >
             Register
           </button>
         </div>
 
-        <h2>
-          {isLogin
-            ? "Welcome Back"
-            : "Create Account"}
-        </h2>
+        <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
 
         <p>
           {isLogin
@@ -156,10 +98,7 @@ function Login() {
             : "Join My-Academy and start learning."}
         </p>
 
-        <form
-          className="auth-form"
-          onSubmit={handleSubmit}
-        >
+        <form className="auth-form" onSubmit={handleSubmit}>
           {!isLogin && (
             <div className="input-group">
               <User size={20} />
@@ -168,12 +107,8 @@ function Login() {
                 type="text"
                 name="name"
                 placeholder="Full Name"
-                value={
-                  formData.name
-                }
-                onChange={
-                  handleChange
-                }
+                value={formData.name}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -186,12 +121,8 @@ function Login() {
               type="email"
               name="email"
               placeholder="Email Address"
-              value={
-                formData.email
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
@@ -200,45 +131,24 @@ function Login() {
             <Lock size={20} />
 
             <input
-              type={
-                showPassword
-                  ? "text"
-                  : "password"
-              }
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
-              value={
-                formData.password
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.password}
+              onChange={handleChange}
               required
             />
 
             <span
               className="eye-icon"
-              onClick={() =>
-                setShowPassword(
-                  !showPassword
-                )
-              }
+              onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? (
-                <EyeOff size={20} />
-              ) : (
-                <Eye size={20} />
-              )}
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
           </div>
 
-          <button
-            type="submit"
-            className="auth-btn"
-          >
-            {isLogin
-              ? "Login"
-              : "Create Account"}
+          <button type="submit" className="auth-btn">
+            {isLogin ? "Login" : "Create Account"}
           </button>
         </form>
 
@@ -246,21 +156,13 @@ function Login() {
           <span>OR</span>
         </div>
 
-        <button
-          className="google-btn"
-          onClick={
-            handleGoogleLogin
-          }
-        >
+        <button className="google-btn" onClick={handleGoogleLogin}>
           <FcGoogle size={24} />
           Continue with Google
         </button>
 
         {isLogin && (
-          <a
-            href="#"
-            className="forgot-link"
-          >
+          <a href="#" className="forgot-link">
             Forgot Password?
           </a>
         )}

@@ -5,9 +5,12 @@ import Courses from "./pages/Courses";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+
 import StudentDashboard from "./pages/dashboard/StudentDashboard";
 import Profile from "./pages/dashboard/Profile";
 import Learning from "./pages/dashboard/Learning";
+import GoogleSuccess from "./pages/GoogleSuccess";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -20,14 +23,36 @@ function App() {
         <Route path="/about" element={<About />} />
 
         <Route path="/contact" element={<Contact />} />
+
         <Route path="/login" element={<Login />} />
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
+        <Route path="/google-success" element={<GoogleSuccess />} />
 
-        <Route path="/dashboard/profile" element={<Profile />} />
-        <Route path="/learning/:courseId" element={<Learning />} />
+        <Route
+          path="/student-dashboard"
+          element={
+            <ProtectedRoute>
+              <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/dashboard/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
-        
+        <Route
+          path="/learning/:courseId"
+          element={
+            <ProtectedRoute>
+              <Learning />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
