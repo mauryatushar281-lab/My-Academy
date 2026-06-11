@@ -55,12 +55,43 @@
 
   transition: all 0.3s ease;
 }
+.profile-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
 
-.profile-box:hover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+/* .profile-box:hover {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f5f5f5;
   transform: translateY(-3px);
   box-shadow:
     0 14px 28px rgba(79, 70, 229, 0.35),
     0 4px 12px rgba(0, 0, 0, 0.12);
+} */
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  border-radius: 50%;
+  display: block;
 }
 
 /* Logout Button */
