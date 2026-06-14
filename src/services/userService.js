@@ -8,11 +8,21 @@ export const getProfile = async () => {
 
 // ================= UPDATE PROFILE =================
 export const updateProfile = async (profileData) => {
-    const res = await API.put("/users/profile", profileData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    });
+
+    const token = localStorage.getItem("token");
+
+
+    const res = await API.put(
+        "/users/profile",
+        profileData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        }
+    );
+
 
     return res.data;
 };
