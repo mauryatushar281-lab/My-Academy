@@ -25,6 +25,7 @@ function StudentDashboard() {
     const fetchProfile = async () => {
       try {
         const profile = await getProfile();
+          console.log("PROFILE DATA:", profile);
         setUser(profile);
       } catch (error) {
         console.error("Profile error:", error);

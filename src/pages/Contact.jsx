@@ -1,4 +1,6 @@
 import "./Contact.css";
+import API from "../services/api.js";
+import { useState } from "react";
 import { Phone, Mail, Clock, Rocket, MapPin } from "lucide-react";
 import {
   FaWhatsapp,
@@ -8,7 +10,86 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+
 function Contact() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const [status, setStatus] = useState("");
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = "Enter a valid email";
+    }
+
+    if (!form.subject.trim()) {
+      newErrors.subject = "Subject is required";
+    }
+
+    if (!form.message.trim()) {
+      newErrors.message = "Message is required";
+    } else if (form.message.length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
+    setStatus("");
+
+    try {
+      const res = await API.post("/contact/send", form);
+
+      setStatus(res.data.message);
+
+      setForm({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.log(error);
+
+      setStatus(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="contact-page">
       <Navbar />
@@ -72,17 +153,79 @@ function Contact() {
 
             <p>Fill out the form and our team will contact you shortly.</p>
 
-            <form className="contact-form">
-              <input type="text" placeholder="Your Name" />
+            {/* contact form here  */}
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <input
+type="text"
+name="name"
+placeholder="Your Name"
+value={form.name}
+onChange={handleChange}
+/>
 
-              <input type="email" placeholder="Your Email" />
 
-              <input type="text" placeholder="Subject" />
+{
+errors.name && 
+<p className="input-error">
+{errors.name}
+</p>
+}
 
-              <textarea rows="6" placeholder="Write Your Message..."></textarea>
+             <input
+type="email"
+name="email"
+placeholder="Your Email"
+value={form.email}
+onChange={handleChange}
+/>
 
-              <button type="submit">Send Message</button>
+
+{
+errors.email &&
+<p className="input-error">
+{errors.email}
+</p>
+}
+
+              <input
+type="text"
+name="subject"
+placeholder="Subject"
+value={form.subject}
+onChange={handleChange}
+/>
+
+
+{
+errors.subject &&
+<p className="input-error">
+{errors.subject}
+</p>
+}
+
+             <textarea
+name="message"
+rows="6"
+placeholder="Write Your Message..."
+value={form.message}
+onChange={handleChange}
+/>
+
+
+{
+errors.message &&
+<p className="input-error">
+{errors.message}
+</p>
+}
+
+              {status && <p className="form-status">{status}</p>}
+
+              <button type="submit" disabled={loading}>
+                {loading ? "Sending..." : "Send Message"}
+              </button>
             </form>
+            {/* end here  */}
           </div>
 
           <div className="contact-right">
@@ -190,3 +333,41 @@ function Contact() {
 }
 
 export default Contact;
+
+{
+  /* <form className="contact-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={form.name}
+                onChange={handleChange}
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={form.email}
+                onChange={handleChange}
+              />
+
+              <input
+                type="text"
+                name="subject"
+                placeholder="Subject"
+                value={form.subject}
+                onChange={handleChange}
+              />
+
+              <textarea
+                name="message"
+                rows="6"
+                placeholder="Write Your Message..."
+                value={form.message}
+                onChange={handleChange}
+              />
+
+              <button type="submit">Send Message</button>
+            </form> */
+}
