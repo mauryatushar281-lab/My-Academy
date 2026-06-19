@@ -128,7 +128,7 @@ function StudentDashboard() {
 
               <span>{course.progress}% Completed</span>
 
-              <button onClick={() => navigate(`/course/${course._id}`)}>
+              <button onClick={() => navigate(`/learning/${course._id}`)}>
                 Continue Learning
               </button>
             </div>

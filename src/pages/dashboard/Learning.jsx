@@ -21,6 +21,7 @@ function Learning() {
         const res = await getCourse(courseId);
 
         const data = res.data;
+        console.log(data)
 
         if (!data) {
           throw new Error("Course not found");

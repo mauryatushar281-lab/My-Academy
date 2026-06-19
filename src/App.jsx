@@ -12,6 +12,9 @@ import Learning from "./pages/dashboard/Learning";
 import GoogleSuccess from "./pages/GoogleSuccess";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+import AdminDashboard from "./pages/dashboard/admin/AdminDashboard";
+import Analytics from "./pages/dashboard/admin/Analytics";
+
 function App() {
   return (
     <BrowserRouter>
@@ -53,6 +56,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin-Analytics" element={<Analytics/>} />
       </Routes>
     </BrowserRouter>
   );
