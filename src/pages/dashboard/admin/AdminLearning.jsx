@@ -1,16 +1,28 @@
 // AdminLearning.jsx
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Plus, X, Edit, Trash2, Search } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { Plus, X, Search } from "lucide-react";
+import {
+  fetchCourses,
+  addCourse,
+  editCourseApi,
+  removeCourse,
+} from "../../../services/AdmincourseService";
+
+// import { Plus, X, Edit, Trash2, Search } from "lucide-react";
+
 import "./AdminLearning.css";
+import CourseCard from "../../../components/AdminCourseCard";
 
 function AdminLearning() {
   const [courses, setCourses] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   const [showForm, setShowForm] = useState(false);
+
   const [editId, setEditId] = useState(null);
+
   const [search, setSearch] = useState("");
 
   const [form, setForm] = useState({
@@ -23,46 +35,48 @@ function AdminLearning() {
     category: "",
   });
 
-  // Fetch courses
+  // LOAD COURSES
 
-  const fetchCourses = async () => {
+  const loadCourses = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/courses");
-      console.log(res);
-      setCourses(res.data);
+      const data = await fetchCourses();
+
+      setCourses(data);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    fetchCourses();
   }, []);
 
-  // Input change
+  useEffect(() => {
+    loadCourses();
+  }, [loadCourses]);
+
+  // INPUT CHANGE
 
   const handleChange = (e) => {
     setForm({
       ...form,
+
       [e.target.name]: e.target.value,
     });
   };
 
-  // Add / Update Course
+  // CREATE / UPDATE
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       if (editId) {
-        await axios.put(
-          `http://localhost:5000/api/courses/update/${editId}`,
+        await editCourseApi(
+          editId,
+
           form,
         );
       } else {
-        await axios.post("http://localhost:5000/api/courses/create", form);
+        await addCourse(form);
       }
 
       setForm({
@@ -76,24 +90,31 @@ function AdminLearning() {
       });
 
       setEditId(null);
+
       setShowForm(false);
 
-      fetchCourses();
+      loadCourses();
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Edit
+  // EDIT
 
   const editCourse = (course) => {
     setForm({
       title: course.title,
+
       description: course.description,
+
       instructor: course.instructor,
+
       duration: course.duration,
+
       thumbnail: course.thumbnail,
+
       price: course.price,
+
       category: course.category,
     });
 
@@ -102,7 +123,7 @@ function AdminLearning() {
     setShowForm(true);
   };
 
-  // Delete
+  // DELETE
 
   const deleteCourse = async (id) => {
     const confirmDelete = window.confirm("Delete this course?");
@@ -110,33 +131,36 @@ function AdminLearning() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/courses/delete/${id}`);
+      await removeCourse(id);
 
-      fetchCourses();
+      loadCourses();
     } catch (error) {
       console.log(error);
     }
   };
 
-  // here for search
+  // SEARCH FILTER
+
   const filteredCourses = courses.filter((course) => {
+    const text = search.toLowerCase();
+
     return (
-      course.title?.toLowerCase().includes(search.toLowerCase()) ||
-      course.instructor?.toLowerCase().includes(search.toLowerCase()) ||
-      course.category?.toLowerCase().includes(search.toLowerCase())
+      course.title?.toLowerCase().includes(text) ||
+      course.instructor?.toLowerCase().includes(text) ||
+      course.category?.toLowerCase().includes(text)
     );
   });
-  // here end for search
 
   return (
     <div className="admin-learning">
-      {/* Header */}
+      {/* HEADER */}
+
       <div className="learning-header">
         <h1>Manage Courses</h1>
 
         <div className="header-actions">
           <div className="search-box">
-            <Search size={35} />
+            <Search size={20} />
 
             <input
               type="text"
@@ -152,7 +176,9 @@ function AdminLearning() {
           </button>
         </div>
       </div>
-      {/* Form */}
+
+      {/* FORM */}
+
       {showForm && (
         <div className="course-form">
           <div className="form-top">
@@ -215,7 +241,9 @@ function AdminLearning() {
           </form>
         </div>
       )}
-      {/* Course List */}
+
+      {/* COURSE LIST */}
+
       <div className="course-grid">
         {loading ? (
           <h3>Loading...</h3>
@@ -223,32 +251,12 @@ function AdminLearning() {
           <h3 className="empty">No courses found</h3>
         ) : (
           filteredCourses.map((course) => (
-            <div className="course-card" key={course._id}>
-              <img src={course.thumbnail} alt={course.title} />
-
-              <div className="course-info">
-                <h2>{course.title}</h2>
-
-                <p>{course.description}</p>
-
-                <span>{course.instructor}</span>
-
-                <p className="category">{course.category}</p>
-
-                <div className="actions">
-                  <button className="edit" onClick={() => editCourse(course)}>
-                    <Edit size={18} />
-                  </button>
-
-                  <button
-                    className="delete"
-                    onClick={() => deleteCourse(course._id)}
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </div>
-            </div>
+            <CourseCard
+              key={course._id}
+              course={course}
+              editCourse={editCourse}
+              deleteCourse={deleteCourse}
+            />
           ))
         )}
       </div>
@@ -257,6 +265,271 @@ function AdminLearning() {
 }
 
 export default AdminLearning;
+
+// // AdminLearning.jsx
+
+// import { useEffect, useState, useCallback } from "react";
+// import {
+//   fetchCourses,
+//   addCourse,
+//   editCourseApi,
+//   removeCourse,
+// } from "../services/AdmincourseService";
+// import { Plus, X, Edit, Trash2, Search } from "lucide-react";
+// import "./AdminLearning.css";
+
+// function AdminLearning() {
+//   const [courses, setCourses] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   const [showForm, setShowForm] = useState(false);
+//   const [editId, setEditId] = useState(null);
+//   const [search, setSearch] = useState("");
+
+//   const [form, setForm] = useState({
+//     title: "",
+//     description: "",
+//     instructor: "",
+//     duration: "",
+//     thumbnail: "",
+//     price: "",
+//     category: "",
+//   });
+
+//   // Fetch courses
+
+//   // Fetch courses
+
+//   const loadCourses = useCallback(async () => {
+//     try {
+//       const data = await fetchCourses();
+
+//       setCourses(data);
+//     } catch (error) {
+//       console.log(error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     loadCourses();
+//   }, [loadCourses]);
+
+//   // Input change
+
+//   const handleChange = (e) => {
+//     setForm({
+//       ...form,
+//       [e.target.name]: e.target.value,
+//     });
+//   };
+
+//   // Add / Update Course
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       if (editId) {
+//         await editCourseApi(editId, form);
+//       } else {
+//         await addCourse(form);
+//       }
+
+//       setForm({
+//         title: "",
+//         description: "",
+//         instructor: "",
+//         duration: "",
+//         thumbnail: "",
+//         price: "",
+//         category: "",
+//       });
+
+//       setEditId(null);
+
+//       setShowForm(false);
+
+//       loadCourses();
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   // Edit
+
+//   const editCourse = (course) => {
+//     setForm({
+//       title: course.title,
+//       description: course.description,
+//       instructor: course.instructor,
+//       duration: course.duration,
+//       thumbnail: course.thumbnail,
+//       price: course.price,
+//       category: course.category,
+//     });
+
+//     setEditId(course._id);
+
+//     setShowForm(true);
+//   };
+
+//   // Delete
+
+//   const deleteCourse = async (id) => {
+//     const confirmDelete = window.confirm("Delete this course?");
+
+//     if (!confirmDelete) return;
+
+//     try {
+//       await removeCourse(id);
+
+//       loadCourses();
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   // here for search
+//   const filteredCourses = courses.filter((course) => {
+//     return (
+//       course.title?.toLowerCase().includes(search.toLowerCase()) ||
+//       course.instructor?.toLowerCase().includes(search.toLowerCase()) ||
+//       course.category?.toLowerCase().includes(search.toLowerCase())
+//     );
+//   });
+//   // here end for search
+
+//   return (
+//     <div className="admin-learning">
+//       {/* Header */}
+//       <div className="learning-header">
+//         <h1>Manage Courses</h1>
+
+//         <div className="header-actions">
+//           <div className="search-box">
+//             <Search size={35} />
+
+//             <input
+//               type="text"
+//               placeholder="Search courses..."
+//               value={search}
+//               onChange={(e) => setSearch(e.target.value)}
+//             />
+//           </div>
+
+//           <button className="add-btn" onClick={() => setShowForm(true)}>
+//             <Plus size={20} />
+//             Add Course
+//           </button>
+//         </div>
+//       </div>
+//       {/* Form */}
+//       {showForm && (
+//         <div className="course-form">
+//           <div className="form-top">
+//             <h2>{editId ? "Update Course" : "Add New Course"}</h2>
+
+//             <X cursor="pointer" onClick={() => setShowForm(false)} />
+//           </div>
+
+//           <form onSubmit={handleSubmit}>
+//             <input
+//               name="title"
+//               placeholder="Course title"
+//               value={form.title}
+//               onChange={handleChange}
+//             />
+
+//             <textarea
+//               name="description"
+//               placeholder="Description"
+//               value={form.description}
+//               onChange={handleChange}
+//             />
+
+//             <input
+//               name="instructor"
+//               placeholder="Instructor"
+//               value={form.instructor}
+//               onChange={handleChange}
+//             />
+
+//             <input
+//               name="duration"
+//               placeholder="Duration"
+//               value={form.duration}
+//               onChange={handleChange}
+//             />
+
+//             <input
+//               name="thumbnail"
+//               placeholder="Thumbnail URL"
+//               value={form.thumbnail}
+//               onChange={handleChange}
+//             />
+
+//             <input
+//               name="price"
+//               placeholder="Price"
+//               value={form.price}
+//               onChange={handleChange}
+//             />
+
+//             <input
+//               name="category"
+//               placeholder="Category"
+//               value={form.category}
+//               onChange={handleChange}
+//             />
+
+//             <button className="save-btn">{editId ? "Update" : "Create"}</button>
+//           </form>
+//         </div>
+//       )}
+//       {/* Course List */}
+//       <div className="course-grid">
+//         {loading ? (
+//           <h3>Loading...</h3>
+//         ) : filteredCourses.length === 0 ? (
+//           <h3 className="empty">No courses found</h3>
+//         ) : (
+//           filteredCourses.map((course) => (
+//             <div className="course-card" key={course._id}>
+//               <img src={course.thumbnail} alt={course.title} />
+
+//               <div className="course-info">
+//                 <h2>{course.title}</h2>
+
+//                 <p>{course.description}</p>
+
+//                 <span>{course.instructor}</span>
+
+//                 <p className="category">{course.category}</p>
+
+//                 <div className="actions">
+//                   <button className="edit" onClick={() => editCourse(course)}>
+//                     <Edit size={18} />
+//                   </button>
+
+//                   <button
+//                     className="delete"
+//                     onClick={() => deleteCourse(course._id)}
+//                   >
+//                     <Trash2 size={18} />
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           ))
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default AdminLearning;
 
 // import { useEffect, useState } from "react";
 // import axios from "axios";
