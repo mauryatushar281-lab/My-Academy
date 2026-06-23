@@ -12,8 +12,12 @@ import Learning from "./pages/dashboard/Learning";
 import GoogleSuccess from "./pages/GoogleSuccess";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+
+import Certificate from "./pages/dashboard/Certificates";
+
 import AdminDashboard from "./pages/dashboard/admin/AdminDashboard";
 import Analytics from "./pages/dashboard/admin/Analytics";
+import AdminLearning from"./pages/dashboard/admin/AdminLearning"
 
 function App() {
   return (
@@ -57,7 +61,11 @@ function App() {
           }
         />
 
+
+        <Route path="/certificate" element={<Certificate/>}  />
+
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin-learning" element={<AdminLearning />} />
         <Route path="/admin-Analytics" element={<Analytics/>} />
       </Routes>
     </BrowserRouter>
