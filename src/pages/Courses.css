@@ -306,7 +306,7 @@ html {
   }
 
   .search-box button {
-    width: 100%;
+    max-width: 40%;
   }
 
   .category-grid,
@@ -331,6 +331,9 @@ html {
 
   .courses-hero {
     padding: 90px 20px;
+  }
+  .search-box button {
+    max-width: 30%;
   }
 }
 
@@ -490,7 +493,7 @@ html {
 
   padding: 18px 30px;
 
-  background: #fbbf24;
+  background: #642666;
 
   color: #111827;
 
@@ -501,6 +504,10 @@ html {
   cursor: pointer;
 
   transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
 }
 
 .search-box button:hover {
@@ -568,7 +575,7 @@ html {
 
   border-radius: 50px;
 
-  background: white;
+  background: rgb(4, 14, 55);
 
   font-weight: 600;
 
@@ -1065,11 +1072,11 @@ html {
   }
 
   .search-box {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .search-box button {
-    width: 100%;
+    width: 80%;
   }
 
   .courses-cta h2 {

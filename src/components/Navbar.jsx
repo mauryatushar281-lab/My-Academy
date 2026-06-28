@@ -140,8 +140,20 @@ function Navbar() {
             </NavLink>
           )}
 
+          {/* <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? (
+              <X className="menu-icon" />
+            ) : (
+              <Menu className="menu-icon" />
+            )}
+          </button> */}
+
           <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
+            {menuOpen ? (
+              <X color="black" size={28} />
+            ) : (
+              <Menu color="black" size={28} />
+            )}
           </button>
         </div>
       </div>

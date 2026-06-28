@@ -1,5 +1,6 @@
 import "./Courses.css";
 import Navbar from "../components/Navbar";
+
 import CourseCard from "../components/CourseCard";
 import {
   Calculator,

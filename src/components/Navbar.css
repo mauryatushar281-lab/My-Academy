@@ -440,32 +440,52 @@ body.dark .suggestions {
 }
 
 /* HAMBURGER */
-
 .menu-btn {
   display: none;
 
-  width: 44px;
-
-  height: 44px;
+  width: 45px;
+  height: 45px;
 
   border: none;
-  background: #f1f5f9;
 
   border-radius: 12px;
+
+  background: #f1f5f9;
+
+  color: #2563eb;
 
   cursor: pointer;
 
   align-items: center;
-
   justify-content: center;
+}
 
-  transition: 0.25s;
+.menu-btn svg {
+  width: 28px;
+  height: 28px;
+
+  stroke-width: 3;
+
+  display: block;
 }
 
 .menu-btn:hover {
   background: #dbeafe;
 
   transform: scale(1.05);
+}
+@media (max-width: 1000px) {
+  .menu-btn {
+    display: flex !important;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
 }
 
 /* ==============================
@@ -657,4 +677,60 @@ body.dark .menu-btn,
 body.dark .theme-btn,
 body.dark .notification-box {
   background: #1e293b;
+}
+/* here  */
+/* ==========================
+   ICON FIX
+========================== */
+
+.menu-btn {
+  display: none;
+
+  width: 46px;
+
+  height: 46px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #f1f5f9;
+
+  color: #111827;
+
+  cursor: pointer;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0;
+}
+
+.menu-icon {
+  width: 28px;
+
+  height: 28px;
+
+  stroke-width: 2.5;
+
+  color: #111827;
+
+  display: block;
+}
+
+.bell-icon {
+  width: 22px;
+
+  height: 22px;
+
+  color: #111827;
+
+  display: block;
+}
+
+@media (max-width: 1000px) {
+  .menu-btn {
+    display: flex;
+  }
 }
