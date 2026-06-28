@@ -69,23 +69,18 @@
 
 .nav-links {
   display: flex;
-
+  justify-content: center;
   align-items: center;
-
   gap: 20px;
 }
 
-.nav-links a {
+.nav-links a,
+.dropdown-btn {
   position: relative;
-
   text-decoration: none;
-
   color: #334155;
-
   font-weight: 600;
-
   font-size: 15px;
-
   transition: 0.25s;
 }
 
@@ -126,15 +121,10 @@
 
 .dropdown-btn {
   border: none;
-
   background: none;
-
   cursor: pointer;
-
   font-weight: 600;
-
   font-size: 15px;
-
   color: #334155;
 }
 
@@ -147,7 +137,7 @@
 
   width: 190px;
 
-  background: rgb(19, 19, 19);
+  background: rgb(240, 190, 220);
 
   padding: 10px;
 
@@ -573,7 +563,6 @@ body.dark .suggestions {
 
   .nav-links a {
     width: 100%;
-
     padding: 8px 0;
   }
 
@@ -583,13 +572,9 @@ body.dark .suggestions {
 
   .dropdown-menu {
     position: static;
-
     width: 100%;
-
     display: none;
-
     box-shadow: none;
-
     background: #f8fafc;
   }
 
@@ -598,19 +583,12 @@ body.dark .suggestions {
   }
   .mobile-login-btn {
     display: block;
-
     width: 100%;
-
     text-align: center;
-
     background: #2563eb;
-
     color: white !important;
-
     padding: 14px;
-
     border-radius: 15px;
-
     font-weight: 700;
   }
 }
@@ -733,4 +711,19 @@ body.dark .notification-box {
   .menu-btn {
     display: flex;
   }
+}
+
+/* new css  */
+.nav-links a,
+.dropdown-btn {
+  color: #222;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  font-family: inherit;
+  transition: 0.3s ease;
 }

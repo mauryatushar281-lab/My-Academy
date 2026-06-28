@@ -5,6 +5,7 @@ import Courses from "./pages/Courses";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import CourseCategory from "./pages/CourseCategory";
 
 import StudentDashboard from "./pages/dashboard/StudentDashboard";
 import Profile from "./pages/dashboard/Profile";
@@ -12,12 +13,11 @@ import Learning from "./pages/dashboard/Learning";
 import GoogleSuccess from "./pages/GoogleSuccess";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-
 import Certificate from "./pages/dashboard/Certificates";
 
 import AdminDashboard from "./pages/dashboard/admin/AdminDashboard";
 import Analytics from "./pages/dashboard/admin/Analytics";
-import AdminLearning from"./pages/dashboard/admin/AdminLearning"
+import AdminLearning from "./pages/dashboard/admin/AdminLearning";
 import UploadLecture from "./pages/dashboard/admin/UploadLecture";
 import UploadContent from "./pages/dashboard/admin/UploadContent";
 import Students from "./pages/dashboard/admin/Students";
@@ -33,6 +33,8 @@ function App() {
         <Route path="/about" element={<About />} />
 
         <Route path="/contact" element={<Contact />} />
+
+        <Route path="/courses/:category" element={<CourseCategory />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/google-success" element={<GoogleSuccess />} />
@@ -64,15 +66,13 @@ function App() {
           }
         />
 
-
-        <Route path="/certificate" element={<Certificate/>}  />
+        <Route path="/certificate" element={<Certificate />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin-learning" element={<AdminLearning />} />
-        <Route path="/admin-Analytics" element={<Analytics/>} />
-        <Route path="/admin-uploads" element={<UploadLecture/>} />
-        <Route path="/admin-upload-content" element={<UploadContent/>} />
-        <Route path="/admin-students" element={<Students/>}/>
-
+        <Route path="/admin-Analytics" element={<Analytics />} />
+        <Route path="/admin-uploads" element={<UploadLecture />} />
+        <Route path="/admin-upload-content" element={<UploadContent />} />
+        <Route path="/admin-students" element={<Students />} />
       </Routes>
     </BrowserRouter>
   );
