@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Search, GraduationCap, Menu, X, Bell, } from "lucide-react";
+import Search from "./Search/Search";
+import { GraduationCap, Menu, X, Bell } from "lucide-react";
 
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
@@ -50,7 +51,6 @@ function Navbar() {
         </Link>
 
         <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-          
           <NavLink to="/" onClick={() => setMenuOpen(false)}>
             Home
           </NavLink>
@@ -88,13 +88,11 @@ function Navbar() {
 
         <div className="right-section">
           <div className="search-wrapper">
-            <Search size={18} />
-
-            <input
-              className="search-box"
-              placeholder="Search Courses"
+            <Search
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={setSearch}
+              placeholder="Search Courses"
+              onClear={() => setSearch("")}
             />
 
             {search && filteredCourses.length > 0 && (
@@ -102,8 +100,10 @@ function Navbar() {
                 {filteredCourses.map((course) => (
                   <div
                     key={course}
+                    className="suggestion-item"
                     onClick={() => {
                       setSearch("");
+
                       navigate("/courses");
                     }}
                   >

@@ -19,6 +19,8 @@ import AdminDashboard from "./pages/dashboard/admin/AdminDashboard";
 import Analytics from "./pages/dashboard/admin/Analytics";
 import AdminLearning from"./pages/dashboard/admin/AdminLearning"
 import UploadLecture from "./pages/dashboard/admin/UploadLecture";
+import UploadContent from "./pages/dashboard/admin/UploadContent";
+import Students from "./pages/dashboard/admin/Students";
 
 function App() {
   return (
@@ -68,6 +70,8 @@ function App() {
         <Route path="/admin-learning" element={<AdminLearning />} />
         <Route path="/admin-Analytics" element={<Analytics/>} />
         <Route path="/admin-uploads" element={<UploadLecture/>} />
+        <Route path="/admin-upload-content" element={<UploadContent/>} />
+        <Route path="/admin-students" element={<Students/>}/>
 
       </Routes>
     </BrowserRouter>
