@@ -5,6 +5,8 @@ import Courses from "./pages/Courses";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import CourseCategory from "./pages/CourseCategory";
 
 import StudentDashboard from "./pages/dashboard/StudentDashboard";
@@ -37,7 +39,10 @@ function App() {
         <Route path="/courses/:category" element={<CourseCategory />} />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/google-success" element={<GoogleSuccess />} />
+
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         <Route
           path="/student-dashboard"

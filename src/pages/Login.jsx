@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { loginUser, registerUser } from "../services/authApi";
 import { Mail, Lock, Eye, EyeOff, GraduationCap, User } from "lucide-react";
-
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import "./Login.css";
@@ -157,9 +157,9 @@ function Login() {
         </button>
 
         {isLogin && (
-          <a href="#" className="forgot-link">
+          <Link to="/forgot-password" className="forgot-link">
             Forgot Password?
-          </a>
+          </Link>
         )}
       </div>
     </div>

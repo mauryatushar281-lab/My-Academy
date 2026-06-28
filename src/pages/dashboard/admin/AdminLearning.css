@@ -149,11 +149,11 @@
   max-height: 90vh;
   max-width: 650px;
   overflow-y: auto;
-  background: #ffffff;
+  background: #fefaff;
   padding: 30px;
   border-radius: 22px;
   z-index: 1000;
-  box-shadow: 0 20px 60px rgba(220, 216, 216, 0.25);
+  box-shadow: 0 20px 60px rgba(34, 33, 33, 0.25);
   margin-bottom: 35px;
   animation: popup 0.25s ease;
 }
@@ -165,7 +165,7 @@
 
   inset: 0;
 
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(245, 247, 251, 0.5);
 
   z-index: -1;
 }
@@ -212,9 +212,9 @@
 .form-top svg {
   cursor: pointer;
 
-  width: 35px;
+  width: 40px;
 
-  height: 35px;
+  height: 40px;
 
   padding: 8px;
 
@@ -235,7 +235,9 @@
 
 .form-top h2 {
   margin: 0;
-
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 25px;
   color: #0f172a;
 }
 

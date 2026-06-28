@@ -212,6 +212,8 @@
 
   border: none;
 
+  color: #0f172a;
+
   background: transparent;
 
   padding: 12px;
@@ -299,7 +301,16 @@
 }
 
 .eye-icon {
+  background: none;
+  border: none;
+
   cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  color: #000002;
 }
 
 .auth-btn {
@@ -364,6 +375,7 @@
 
   border: 1px solid #e2e8f0;
 
+  color: #0f172a;
   background: white;
 
   display: flex;
@@ -418,4 +430,20 @@
   .auth-logo h1 {
     font-size: 24px;
   }
+}
+
+/* Remove browser default password eye */
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+input::-webkit-credentials-auto-fill-button,
+input::-webkit-textfield-decoration-container {
+  display: none;
+}
+
+.eye-icon svg{
+  color: #000002;
 }
